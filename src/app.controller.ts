@@ -94,13 +94,18 @@ export class AppController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('JWT-auth')
-  @Get('logout')
+  @ApiResponse({
+    description:
+      'ըստ լոգին եղած մարդու տվյալների իր accessToken ջնջում է բազայից',
+  })
+  @Post('logout')
   async logout(@Request() req, @Res() res: Response) {
     try {
       console.log('User=>', req.user);
-      // await this.authService.logout(req.user)
-      return res.status(HttpStatus.OK).json(req.user);
+      const data = await this.authService.logout(req.user.userId)
+      return res.status(HttpStatus.OK).json(data);
     } catch (e) {
       return res.status(HttpStatus.BAD_REQUEST).json({
         error: e.message,

@@ -25,10 +25,11 @@ export class AuthService {
 
   async login(user: User) {
     console.log('user=>', user);
-    const payload = {
+    const payload:any = {
       email: user.email,
       role: user.role,
       userId: user.id,
+      accessToken:""
     };
     const accessToken = this.jwtService.sign(payload);
     await this.userServ.updateAaccessToken(user.id, accessToken)
@@ -37,15 +38,9 @@ export class AuthService {
       role: user.role,
     };
   }
-  async logout(user: User) {
-    console.log('user=>', user);
-    const payload = {
-      email: user.email,
-      role: user.role,
-      userId: user.id,
-    };
-    const accessToken = this.jwtService.sign(payload);
-    await this.userServ.deleteAaccessToken(user.id, accessToken)
+  async logout(userId: number) {
+    console.log('user=>...........................', userId);
+    await this.userServ.deleteAaccessToken(userId)
     return true
   }
 }

@@ -164,14 +164,13 @@ export class UserService {
     }
   }
 
-  // async findOneById(id: number) {
-  //   return await this.userRepository.findOne({
-  //     where: {
-  //       id
-  //     },
-  //     relations: ['skills']
-  //   })
-  // }
+  async findOneById(id: number) {
+    return await this.userRepository.findOne({
+      where: {
+        id
+      },
+    })
+  }
 
   async changePassword(data: ChangePasswordDto, id: number) {
     const user = await this.userRepository.findOneBy({ id });
@@ -226,8 +225,8 @@ export class UserService {
       throw new NotFoundException('Oops! user not found');
     }
   }
-  async deleteAaccessToken(id: number, accessToken: string) {
-    const us = await this.userRepository.findOneBy({ id , accessToken});
+  async deleteAaccessToken(id: number) {
+    const us = await this.userRepository.findOneBy({ id });
     if (us) {
       this.userRepository.update({ id }, { accessToken:null });
       return true;
