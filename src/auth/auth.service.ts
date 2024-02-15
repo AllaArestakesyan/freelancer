@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import passport from 'passport';
 import passportLocal from 'passport-local';
+import { jwtConstants } from './constants';
 
 @Injectable()
 export class AuthService {
@@ -23,14 +24,27 @@ export class AuthService {
     return null;
   }
 
+
+  validateToken(token: string) {
+    return this.jwtService.verify(token, {
+      secret: jwtConstants.secret
+    });
+  }
+  findOneById(id: number) {
+    return this.userServ.findOneById(id)
+  }
+  
+
+
   async login(user: User) {
     console.log('user=>', user);
-    const payload:any = {
+    const payload: any = {
       email: user.email,
       role: user.role,
       userId: user.id,
-      accessToken:""
+      accessToken: ""
     };
+
     const accessToken = this.jwtService.sign(payload);
     await this.userServ.updateAaccessToken(user.id, accessToken)
     return {
