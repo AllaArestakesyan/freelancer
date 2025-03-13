@@ -23,10 +23,10 @@ export class Job {
     price: number
 
     @Column("int")
-    customerUserId: number
+    customerId: number
 
     @Column({nullable:true})
-    freelancerUserId: number
+    freelancerId: number
 
     @Column({ default: 0 })
     status: StatusEnum

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule } from "@nestjs/typeorm"
 import { User } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
 import { SkillsModule } from './skills/skills.module';
@@ -22,6 +22,7 @@ import { FreelancerModule } from './freelancer/freelancer.module';
 import { Customer } from './customer/entities/customer.entity';
 import { Freelancer } from './freelancer/entities/freelancer.entity';
 
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -31,17 +32,7 @@ import { Freelancer } from './freelancer/entities/freelancer.entity';
       username: 'root',
       password: '',
       database: 'test',
-      // database: 'customer-freelancer',
-      entities: [
-        User,
-        Skill,
-        UserSkill,
-        Job,
-        JobSkill,
-        JobUser,
-        Customer,
-        Freelancer,
-      ],
+      entities: [User, Skill, UserSkill, Job, JobSkill, JobUser, Customer, Freelancer],
       synchronize: true,
     }),
 
@@ -51,12 +42,11 @@ import { Freelancer } from './freelancer/entities/freelancer.entity';
         port: 465,
         secure: true,
         auth: {
-          user: 'hakobgrigoryan30@gmail.com',
-          pass: 'srtp ywak otle sbio',
+          user: '...',
+          pass: '...',
         },
       },
     }),
-
     AuthModule,
     UserModule,
     CustomerModule,
@@ -70,8 +60,9 @@ import { Freelancer } from './freelancer/entities/freelancer.entity';
     JobUserModule,
 
     FeedbackModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

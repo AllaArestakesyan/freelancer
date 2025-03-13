@@ -4,57 +4,42 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt'
 import passport from 'passport';
-import passportLocal from 'passport-local';
-import { jwtConstants } from './constants';
+import passportLocal from "passport-local"
+
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService, private userServ: UserService) { }
+    constructor(
+        private jwtService: JwtService,
+        private userServ: UserService,
+    ) { }
 
-  async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.userServ.findOneForLogin(username);
-    console.log(user);
+    async validateUser(username: string, password: string): Promise<any> {
+        const user = await this.userServ.findOne(username);
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const { password, ...result } = user;
-      return result;
+        if (user && await bcrypt.compare(password, user.password)) {
+            const { password, ...result } = user;
+            return result
+        }
+        return null
     }
-    return null;
-  }
 
-
-  validateToken(token: string) {
-    return this.jwtService.verify(token, {
-      secret: jwtConstants.secret
-    });
-  }
-  findOneById(id: number) {
-    return this.userServ.findOneById(id)
-  }
-  
-
-
-  async login(user: User) {
-    console.log('user=>', user);
-    const payload: any = {
-      email: user.email,
-      role: user.role,
-      userId: user.id,
-      accessToken: ""
-    };
-
-    const accessToken = this.jwtService.sign(payload);
-    await this.userServ.updateAaccessToken(user.id, accessToken)
-    return {
-      access_token: accessToken,
-      role: user.role,
-    };
-  }
-  async logout(userId: number) {
-    console.log('user=>...........................', userId);
-    await this.userServ.deleteAaccessToken(userId)
-    return true
-  }
+    async login(user: User) {
+        console.log("user=>", user);
+        const payload = {
+            username: user.email,
+            role: user.role,
+            userId: user.id,
+            name: user.name,
+            surname: user.surname,
+            freelacer:user.freelancer,
+            customer:user.customer
+        };
+        return {
+            access_token: this.jwtService.sign(payload),
+            role:user.role
+        };
+    }
 }

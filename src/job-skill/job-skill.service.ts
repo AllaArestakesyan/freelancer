@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { CreateJobSkillDto } from './dto/create-job-skill.dto';
 import { UpdateJobSkillDto } from './dto/update-job-skill.dto';
 import { JobSkill } from './entities/job-skill.entity';
+import { Customer } from 'src/customer/entities/customer.entity';
 
 @Injectable()
 export class JobSkillService {
@@ -20,6 +21,8 @@ export class JobSkillService {
   ) { }
 
   async create({ userId, jobId, skillId }: any) {
+    console.log(userId, jobId, skillId);
+    
     const skill = await this.skillRepository.findOneBy({ id: skillId })
     if (!skill) {
       throw new NotFoundException('Oops! skills not found');
@@ -28,11 +31,15 @@ export class JobSkillService {
     if (!job) {
       throw new NotFoundException('Oops! job not found');
     }
-    const user = await this.userRepository.findOne({ where: { id: userId } })
+    const user = await this.userRepository.findOne({ where: { id: userId }, relations: { customer: true } })
+    console.log(user);
+    
     if (!user) {
       throw new NotFoundException('Oops! user not found');
     }
-    
+    if (user.id != userId) {
+      throw new NotFoundException('Oops! you do not have access');
+    }
     const userskill = await this.jobSkillRepository.find({
       where: {
         skillId: skillId,
@@ -66,7 +73,7 @@ export class JobSkillService {
     if (!user) {
       throw new NotFoundException('Oops! user not found');
     }
-    if (user.id != userId) {
+    if (user.freelancer[0].id != userId) {
       throw new NotFoundException('Oops! you do not have access');
     } else {
       const jskill = await this.jobSkillRepository.findOneBy({ id });

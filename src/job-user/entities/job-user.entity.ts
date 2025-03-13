@@ -9,7 +9,7 @@ export class JobUser {
     id: number;
 
     @Column("int")
-    freelancerUserId: number
+    freelancerId: number
 
     @Column("int")
     jobId: number

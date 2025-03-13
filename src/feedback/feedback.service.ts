@@ -6,30 +6,26 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class FeedbackService {
+
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(Job) private jobRepository: Repository<Job>,
-  ) {}
+
+  ) { }
+
 
   async create(createFeedbackDto: any) {
-    const us = await this.userRepository.findOne({
-      where: { id: createFeedbackDto.user.userId },
-      relations: { freelancer: true },
-    });
+    const us = await this.userRepository.findOne({where:{ id: createFeedbackDto.user.userId }, relations:{freelancer:true}})
     if (!us) {
       throw new NotFoundException('Oops! user not found');
     }
-    const job = await this.jobRepository.findOneBy({
-      id: createFeedbackDto.jobId,
-    });
+    const job = await this.jobRepository.findOneBy({ id: createFeedbackDto.jobId })
     if (!job) {
       throw new NotFoundException('Oops! job not found');
     }
     const { user, jobId, ...data } = createFeedbackDto;
-    console.log("29=>",user, jobId);
-    
-    if (job.customerUserId == user.userId && job.status == 2) {
-      await this.jobRepository.update({ id: jobId }, data);
+    if (job.customerId == user.customer[0].id && job.status == 2) {
+      await this.jobRepository.update({id:jobId},data)
       return 'adds a new feedback';
     } else {
       if (job.status != 2) {

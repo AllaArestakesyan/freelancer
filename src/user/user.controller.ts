@@ -30,7 +30,7 @@ export class UserController {
       const data = await this.userService.verify(user);
       return res.status(HttpStatus.OK).json(data)
     } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ error: e.message })
+      return res.status(HttpStatus.OK).json({ error: e.message })
     }
   }
 
@@ -44,7 +44,7 @@ export class UserController {
       const data = await this.userService.findAll();
       return res.status(HttpStatus.OK).json(data)
     } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({
+      return res.status(HttpStatus.OK).json({
         error: e.message
       })
     }
@@ -60,7 +60,7 @@ export class UserController {
   //     const data = await this.userService.findOneById(id)
   //     return res.status(HttpStatus.OK).json(data)
   //   } catch (e) {
-  //     return res.status(HttpStatus.BAD_REQUEST).json({
+  //     return res.status(HttpStatus.OK).json({
   //       error: e.message
   //     })
   //   }
@@ -80,7 +80,7 @@ export class UserController {
       const data = await this.userService.changePassword(changePassword, req.user.userId);
       return res.status(HttpStatus.OK).json(data);
     } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ message: e.message });
+      return res.status(HttpStatus.OK).json({ message: e.message });
     }
   }
 
@@ -94,7 +94,7 @@ export class UserController {
       const data = await this.userService.update(+id, updateUserDto);
       return res.status(HttpStatus.OK).json(data)
     } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({
+      return res.status(HttpStatus.OK).json({
         error: e.message
       })
     }
@@ -112,7 +112,7 @@ export class UserController {
       const data = await this.userService.forgotPassword(forgotPassword)
       return res.status(HttpStatus.OK).json(data);
     } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ message: e.message });
+      return res.status(HttpStatus.OK).json({ message: e.message });
     }
   }
   @HttpCode(HttpStatus.OK)
@@ -127,7 +127,7 @@ export class UserController {
       const data = await this.userService.resetPassword(resetPassword, email)
       return res.status(HttpStatus.OK).json(data);
     } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ message: e.message });
+      return res.status(HttpStatus.OK).json({ message: e.message });
     }
   }
 
@@ -142,7 +142,7 @@ export class UserController {
       const data = await this.userService.remove(+id);
       return res.status(HttpStatus.OK).json(data)
     } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({
+      return res.status(HttpStatus.OK).json({
         error: e.message
       })
     }

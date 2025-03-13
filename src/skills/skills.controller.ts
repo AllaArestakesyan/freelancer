@@ -25,7 +25,7 @@ export class SkillsController {
       const data = await this.skillsService.create(createSkillDto);
       return res.status(HttpStatus.OK).json(data);
     } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ error: e.message })
+      return res.status(HttpStatus.OK).json({ error: e.message })
     }
   }
 
@@ -37,7 +37,7 @@ export class SkillsController {
       const data = await this.skillsService.findAll();
       return res.status(HttpStatus.OK).json(data);
     } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ error: e.message })
+      return res.status(HttpStatus.OK).json({ error: e.message })
     }
   }
 
@@ -49,7 +49,7 @@ export class SkillsController {
       const data = await this.skillsService.findOne(+id);
       return res.status(HttpStatus.OK).json(data);
     } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ error: e.message })
+      return res.status(HttpStatus.OK).json({ error: e.message })
     }
   }
   @HttpCode(HttpStatus.OK)
@@ -60,7 +60,7 @@ export class SkillsController {
       const data = await this.skillsService.findJobBySkillId(+id);
       return res.status(HttpStatus.OK).json(data);
     } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ error: e.message })
+      return res.status(HttpStatus.OK).json({ error: e.message })
     }
   }
 
@@ -73,7 +73,7 @@ export class SkillsController {
       const data = await this.skillsService.update(+id, updateSkillDto);
       return res.status(HttpStatus.OK).json(data);
     } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ error: e.message })
+      return res.status(HttpStatus.OK).json({ error: e.message })
     }
   }
 
@@ -88,7 +88,7 @@ export class SkillsController {
       const data = await this.skillsService.remove(+id);
       return res.status(HttpStatus.OK).json(data);
     } catch (e) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ error: e.message })
+      return res.status(HttpStatus.OK).json({ error: e.message })
     }
   }
 }

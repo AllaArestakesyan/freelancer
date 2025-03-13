@@ -24,9 +24,6 @@ export class User {
     @Column()
     emailToken: string;
 
-    @Column({default:null})
-    accessToken: string;
-
     @Column({ default: 0 })
     isVerified: number;
     @Column({ default: 0 })
@@ -35,11 +32,11 @@ export class User {
     @Column()
     role: Role
 
-    @OneToMany(type => Customer, customer => customer.user, { cascade: true })
-    customer: Customer[]
-
-    @OneToMany(type => Freelancer, freelancer => freelancer.user, { cascade: true })
-    freelancer: Freelancer[]
-
-
+    @OneToMany(type => Customer, customer => customer.user)
+    customer: Customer
+ 
+    @OneToMany(type => Freelancer, freelancer => freelancer.user)
+    freelancer: Freelancer
+    
+    
 }

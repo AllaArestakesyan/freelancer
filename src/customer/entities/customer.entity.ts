@@ -1,11 +1,14 @@
 import { Job } from "src/jobs/entities/job.entity";
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Customer {
-    @PrimaryColumn()
-    userId: number;
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column()
+    userId:number
 
     @Column()
     description:string

@@ -10,53 +10,51 @@ import { UserSkill } from './entities/user-skill.entity';
 @Injectable()
 export class UserSkillsService {
   constructor(
-    @InjectRepository(UserSkill)
-    private userSkillRepository: Repository<UserSkill>,
+    @InjectRepository(UserSkill) private userSkillRepository: Repository<UserSkill>,
     @InjectRepository(Skill) private skillRepository: Repository<Skill>,
     @InjectRepository(User) private userRepository: Repository<User>,
-  ) {}
+
+  ) { }
 
   async create(createUserSkillDto: any) {
     console.log(createUserSkillDto);
 
-    const skill = await this.skillRepository.findOneBy({
-      id: createUserSkillDto.skillId,
-    });
+    const skill = await this.skillRepository.findOneBy({ id: createUserSkillDto.skillId })
     if (!skill) {
       throw new NotFoundException('Oops! skills not found');
     }
-    const user = await this.userRepository.findOneBy({
-      id: createUserSkillDto.freelancerId,
-    });
+    const user = await this.userRepository.findOneBy({ id: createUserSkillDto.freelancerId })
     if (!user) {
       throw new NotFoundException('Oops! user not found');
     }
     if (user.role != 2) {
       throw new NotFoundException('Oops! you do not have access');
     }
+    const us = await this.userRepository.findOne({ where: { id: createUserSkillDto.freelancerId }, relations: { freelancer: true } })
     const userskill = await this.userSkillRepository.find({
       where: {
         skillId: createUserSkillDto.skillId,
-        freelancerUserId: user.id,
+        freelancerId: us.freelancer[0].id
       },
-    });
+    })
     if (userskill.length) {
       throw new NotFoundException('Oops! user skills has already');
     }
     await this.userSkillRepository.save({
       skillId: createUserSkillDto.skillId,
-      freelancerId: user.id,
-    });
+      freelancerId: us.freelancer[0].id
+    })
     return 'adds a new user skill';
+
   }
 
   async findSkillByFreelacerId(id: number) {
     const userskill = await this.userSkillRepository.find({
       where: {
-        freelancerUserId: id,
+        freelancerId: id
       },
-      relations: ['skill'],
-    });
+      relations: ['skill']
+    })
     if (userskill) {
       return userskill;
     } else {
@@ -67,8 +65,8 @@ export class UserSkillsService {
   async remove(id: number) {
     const skill = await this.userSkillRepository.findOneBy({ id });
     if (skill) {
-      this.userSkillRepository.delete({ id });
-      return true;
+      this.userSkillRepository.delete({ id })
+      return "delete user skill - " + skill.id;
     } else {
       throw new NotFoundException('Oops! user skills not found');
     }
